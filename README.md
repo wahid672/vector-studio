@@ -149,6 +149,10 @@ Atribusi dan lisensi dependensi dipertahankan dalam `dist/THIRD-PARTY-NOTICES.tx
 
 ## Pembersihan tracing dan Hand
 
-Pembersihan Seimbang (default) menyaring variasi RGB ringan sambil mempertahankan batas warna yang kuat, membuang alpha sangat lemah, dan menghapus komponen transparan kecil yang terpisah. Mode Kuat juga menghapus pulau piksel kecil yang opak dan bisa mengurangi aksen/detail kecil; Nonaktif mempertahankan input asli. Preview Asli selalu menampilkan sumber sebelum pembersihan. Unlimited tetap tidak mengirim batas palet `maxColors`; presisi kanal mengelompokkan perbedaan warna yang tidak signifikan sesuai tingkat detail. Susunan bidang Bertumpuk menjadi default untuk mengurangi celah render antarbidang; Cutout tetap tersedia. Parameter ini tidak menjamin kesetaraan dengan Vector Magic.
+Pembersihan Seimbang (default) menyaring variasi RGB ringan sambil mempertahankan batas warna yang kuat, membuang alpha sangat lemah, dan menghapus komponen transparan kecil yang terpisah. Mode Kuat memperkuat pembersihan alpha/noise tanpa menghapus pulau piksel opak. Nonaktif melewati pembersihan input. Preview Asli selalu menampilkan sumber sebelum pembersihan. Unlimited tetap tidak mengirim batas palet `maxColors`; presisi kanal selalu 8 bit dan selisih layer tetap kecil, terlepas dari kekuatan cleanup. Kontur tonal input dibulatkan dengan perubahan maksimal 2 unit per kanal agar gradasi tidak dirantai menjadi satu warna oleh clusterer; ini bukan pembatas jumlah warna global. Cutout menjadi default; Bertumpuk tersedia sebagai alternatif. Parameter ini tidak menjamin kesetaraan dengan Vector Magic.
 
 Gunakan Hand (tombol toolbar atau H) untuk drag kanvas, tahan Spasi + drag sebagai hand sementara, atau drag dengan tombol tengah mouse. Mode Hand menonaktifkan pembatas compare selama drag; mematikan Hand mengaktifkan kembali pembatas. Alat ini menggeser tampilan gambar, bukan memindah path dalam SVG.
+
+## Pengujian kesetiaan warna
+
+Tes `fidelity.test.cjs` merender kembali SVG menggunakan resvg dan membandingkan piksel dengan fixture bergradasi. Tes memeriksa galat warna pada area tonal, rentang terang–gelap, detail gelap, dan highlight putih kecil. Jumlah path yang lebih rendah tidak dianggap sebagai bukti kualitas. Renderer hanya dependency pengujian di build; tidak dikirim ke browser atau image Nginx final.

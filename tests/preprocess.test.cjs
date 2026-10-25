@@ -10,7 +10,7 @@ test('balanced cleanup removes weak alpha dust, preserves opaque accents and sof
  assert.deepEqual(a,original);assert.equal(balanced.removedPixels,3);
  assert.equal(balanced.rgba[(1*w+1)*4+3],0);assert.equal(balanced.rgba[(2*w+4)*4+3],0);
  assert.equal(balanced.rgba[(6*w+4)*4+3],255);assert.equal(balanced.rgba[(20*w+11)*4+3],128);
- assert.equal(prepareRaster(a,w,w,'strong').rgba[(6*w+4)*4+3],0);
+ assert.equal(prepareRaster(a,w,w,'strong').rgba[(6*w+4)*4+3],255);
  assert.deepEqual(prepareRaster(a,w,w,'off').rgba,original);
 });
 test('noise smoothing reduces color variation without blurring a strong black/white boundary',async()=>{

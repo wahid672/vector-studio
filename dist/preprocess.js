@@ -2,7 +2,7 @@
 export function prepareRaster(input,width,height,level='balanced'){
  if(input.length!==width*height*4)throw Error('Ukuran piksel gambar tidak valid.');
  if(level==='off')return {rgba:input,removedPixels:0};
- const strong=level==='strong',cutoff=strong?64:24;
+ const strong=level==='strong',cutoff=strong?48:24;
  const rgba=new Uint8Array(input);let removedPixels=0;
  for(let p=0;p<rgba.length;p+=4){
   if(rgba[p+3]<cutoff){if(rgba[p+3])removedPixels++;rgba.fill(0,p,p+4);}
@@ -21,10 +21,10 @@ export function prepareRaster(input,width,height,level='balanced'){
     if(!seen[n]&&rgba[n*4+3]){seen[n]=1;queue[tail++]=n;}
    }
   }
-  if(tail<=(strong?9:4)&&(strong||peak<192))for(let i=0;i<tail;i++){rgba.fill(0,queue[i]*4,queue[i]*4+4);removedPixels++;}
+  if(tail<=(strong?9:4)&&peak<192)for(let i=0;i<tail;i++){rgba.fill(0,queue[i]*4,queue[i]*4+4);removedPixels++;}
  }
  // Bilateral-style local smoothing: reject neighbors across strong color/alpha edges.
- const snapshot=rgba.slice(),radius=strong?2:1,sigma2=strong?1296:576;
+ const snapshot=rgba.slice(),radius=1,sigma2=strong?576:144;
  for(let y=0;y<height;y++)for(let x=0;x<width;x++){
   const p=(y*width+x)*4,a=snapshot[p+3];if(!a)continue;
   let r=0,g=0,b=0,total=0;
@@ -39,4 +39,16 @@ export function prepareRaster(input,width,height,level='balanced'){
   rgba[p]=Math.round(r/total);rgba[p+1]=Math.round(g/total);rgba[p+2]=Math.round(b/total);
  }
  return {rgba,removedPixels};
+}
+
+// Small, explicit tonal contours prevent the color clusterer from chaining a
+// continuous ramp into one average region. This is not a global palette cap.
+// Cap the adjustment at two 8-bit channel units, regardless of cleanup strength.
+export function preserveTonalContours(input){
+ const rgba=input.slice();
+ for(let p=0;p<rgba.length;p+=4){
+  if(!rgba[p+3])continue;
+  for(let c=0;c<3;c++)rgba[p+c]=Math.min(255,Math.round(rgba[p+c]/4)*4);
+ }
+ return rgba;
 }
