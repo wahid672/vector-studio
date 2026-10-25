@@ -1,0 +1,12 @@
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
+const root = new URL('../', import.meta.url);
+const pkg = new URL('node_modules/@visioncortex/vtracer/pkg/', root);
+await mkdir(new URL('dist/vendor/', root), {recursive:true});
+let js = await readFile(new URL('vtracer_wasm.js',pkg),'utf8');
+const marker = "const wasmPath =";
+if (!js.includes(marker)) throw Error('VTracer adapter: upstream initialization changed.');
+js = js.slice(0,js.indexOf(marker)).replace(/^exports\.vectorize_(bytes|rgba) = vectorize_\1;\r?\n/gm,'');
+js += `\nlet wasm;\nexport function init(bytes) {\n const module = new WebAssembly.Module(bytes);\n wasm = new WebAssembly.Instance(module, __wbg_get_imports()).exports;\n wasm.__wbindgen_start();\n}\nexport { vectorize_bytes, vectorize_rgba };\n`;
+await writeFile(new URL('dist/vendor/vtracer.js',root),'// VTracer 1.0.0-alpha.4 — MIT OR Apache-2.0. Browser initialization adapter.\n'+js);
+await copyFile(new URL('vtracer_wasm_bg.wasm',pkg),new URL('dist/vendor/vtracer.wasm',root));
+console.log('VTracer WASM and browser adapter prepared.');
