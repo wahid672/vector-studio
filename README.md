@@ -120,7 +120,9 @@ Buka http://127.0.0.1:4173. Direktori `dist/` dapat disajikan sebagai situs stat
 ## Fitur
 
 - Pemilihan gambar, drag/drop, paste clipboard, dan contoh raster bawaan.
-- Preset logo, ilustrasi, hitam-putih; pengaturan jumlah warna, penyederhanaan, bintik, bentuk garis, dan threshold.
+- Pengaturan jenis gambar (artwork tepi halus / tajam, foto, hitam-putih), kualitas sumber, dan tingkat detail hasil.
+- **Unlimited colors** sebagai default: tidak mengirim `maxColors` atau palet ke VTracer; jumlah warna tidak dibatasi ke 32. VTracer tetap mengelompokkan warna menurut kualitas, detail, dan struktur gambar, sehingga tidak menjamin setiap piksel menjadi warna tersendiri.
+- Pilihan pembatasan 2–256 warna atau palet kustom HEX; pengaturan penyederhanaan, bintik, bentuk garis, dan threshold hitam-putih.
 - Preview pembanding, asli, vektor, outline, dan zoom 25–400%.
 - Unduh SVG dengan path asli, statistik path/warna/ukuran/waktu, serta pembatalan worker.
 - SVG hasil lama tidak bisa diunduh setelah pengaturan berubah sampai pemrosesan berhasil.
@@ -128,6 +130,8 @@ Buka http://127.0.0.1:4173. Direktori `dist/` dapat disajikan sebagai situs stat
 ## Batas
 
 Maksimal file 20 MB; input di atas 40 MP ditolak setelah decode. Gambar diperkecil menjadi maksimal sisi 1600 px dan 2 MP; ukuran pemrosesan ditampilkan. Browser harus mendukung WebAssembly, module Worker, createImageBitmap, dan ResizeObserver. GIF menggunakan frame pertama. Belum ada ekspor EPS/PDF/DXF, batch, penghapusan background otomatis, atau penyuntingan region. Alpha input dipertahankan sesuai hasil engine; tidak ada fitur AI tambahan.
+
+Unlimited colors tidak menghapus batas resolusi atau waktu proses (120 detik). Foto dan gradasi dapat menghasilkan lebih banyak path serta SVG lebih besar; gunakan detail lebih rendah atau batasi warna jika perlu. Susunan pengaturan terinspirasi alur Vector Magic; engine tetap VTracer dan hasilnya tidak dijamin identik.
 
 ## Engine
 

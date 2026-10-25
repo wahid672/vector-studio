@@ -16,3 +16,34 @@ test('browser adapter creates real editable paths from RGBA, with palette and tr
 test('invalid RGBA input is rejected',async()=>{
  const engine=await import('../dist/vendor/vtracer.js');assert.throws(()=>engine.vectorize_rgba(new Uint8Array(3),64,64,{}));
 });
+
+test('unlimited color mode preserves more than 32 colors; limited and custom modes constrain the same image',async()=>{
+ const engine=await import('../dist/vendor/vtracer.js');
+ const {buildOptions}=await import('../dist/settings.js');
+ const width=96,rgba=new Uint8Array(width*width*4);
+ for(let y=0;y<width;y++)for(let x=0;x<width;x++){
+  const n=Math.floor(y/12)*8+Math.floor(x/12);
+  rgba.set([(n%4)*80+8,(Math.floor(n/4)%4)*80+8,Math.floor(n/16)*80+8,255],(y*width+x)*4);
+ }
+ const base={preset:'logo',quality:'high',detail:'high',simplify:0,speckle:0,mode:'spline',colors:8,threshold:128};
+ const colors=svg=>new Set([...svg.matchAll(/fill="(#[0-9a-f]{6})"/gi)].map(match=>match[1].toUpperCase()));
+ const unlimited=buildOptions({...base,colorMode:'unlimited'});
+ assert.equal(Object.hasOwn(unlimited,'maxColors'),false);
+ assert.equal(Object.hasOwn(unlimited,'palette'),false);
+ const full=colors(engine.vectorize_rgba(rgba,width,width,unlimited));
+ assert.ok(full.size>32,`Expected more than 32 output colors, got ${full.size}`);
+ const limited=colors(engine.vectorize_rgba(rgba,width,width,buildOptions({...base,colorMode:'limited'})));
+ assert.ok(limited.size<=8 && limited.size>1);
+ const custom=colors(engine.vectorize_rgba(rgba,width,width,buildOptions({...base,colorMode:'custom',palette:'#112233, #EECC99'})));
+ assert.ok(custom.size>0);
+ for(const color of custom)assert.ok(['#112233','#EECC99'].includes(color));
+ const bw=buildOptions({...base,preset:'bw',colorMode:'custom',palette:'invalid'});
+ assert.equal(Object.hasOwn(bw,'palette'),false);assert.equal(bw.clustering,'bw');
+});
+
+test('invalid custom palettes fail before processing',async()=>{
+ const {parsePalette}=await import('../dist/settings.js');
+ assert.throws(()=>parsePalette('red, #12'),/HEX/);
+ assert.throws(()=>parsePalette(''),/HEX/);
+ assert.deepEqual(parsePalette('#aabbcc, #AABBCC\n#112233'),['#AABBCC','#112233']);
+});
