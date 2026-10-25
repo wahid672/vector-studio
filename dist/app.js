@@ -1,7 +1,7 @@
 import {installViewer} from './viewer.js';
 import {buildOptions,imagePresets,detailPresets,qualityPresets} from './settings.js';
 const $=id=>document.getElementById(id);
-const controls=['preset','quality','detail','colors','palette','simplify','speckle','mode','threshold'];
+const controls=['preset','quality','detail','colors','palette','simplify','speckle','mode','threshold','cleanup','layering'];
 let source=null,svg='',rasterURL='',vectorURL='',worker=null,timer=null,busy=false,dirty=false,view='compare',generation=0;
 const colorMode=()=>document.querySelector('input[name="color-mode"]:checked').value;
 function message(text){$('notice').textContent=text;$('notice').hidden=!text;}
@@ -28,7 +28,7 @@ function trace(){
  worker.onerror=()=>{if(job===generation)failed('Mesin tidak dapat berjalan. Muat ulang halaman lalu coba gambar yang lebih kecil.');};
  worker.onmessage=({data})=>{
   if(job!==generation)return;
-  if(data.type==='ready'){$('busy-label').textContent='Menyusun kurva dan warna…';return;}
+  if(data.type==='ready'){$('busy-label').textContent='Membersihkan gambar dan menyusun kurva…';return;}
   if(data.type==='error'){failed('Vektorisasi gagal: '+data.message);return;}
   stopWorker();svg=data.svg;dirty=false;setBusy(false);showSVG();
   const doc=new DOMParser().parseFromString(svg,'image/svg+xml');
@@ -36,10 +36,10 @@ function trace(){
   $('stat-colors').textContent=new Set([...doc.querySelectorAll('[fill]')].map(el=>el.getAttribute('fill')).filter(v=>v!=='none')).size;
   $('stat-size').textContent=(new Blob([svg]).size/1024).toFixed(1)+' KB';
   $('stat-time').textContent=(data.elapsed/1000).toFixed(2)+' dtk';
-  status('Vektor siap · SVG dapat diunduh');
+  status(data.removedPixels?`Vektor siap · ${data.removedPixels.toLocaleString('id-ID')} piksel noise transparan dibersihkan`:'Vektor siap · SVG dapat diunduh');
  };
  const rgba=source.rgba.slice().buffer;
- worker.postMessage({rgba,width:source.width,height:source.height,options:traceOptions},[rgba]);
+ worker.postMessage({rgba,width:source.width,height:source.height,options:traceOptions,cleanup:$('cleanup').value},[rgba]);
 }
 function clearResult(){svg='';dirty=true;if(vectorURL){URL.revokeObjectURL(vectorURL);vectorURL='';}$('vector').removeAttribute('src');for(const id of ['paths','colors','size','time']) $('stat-'+id).textContent='—';renderView();viewer.fit();}
 function setSource(canvas,name,meta){source={width:canvas.width,height:canvas.height,rgba:canvas.getContext('2d').getImageData(0,0,canvas.width,canvas.height).data,name};if(rasterURL)URL.revokeObjectURL(rasterURL);rasterURL=canvas.toDataURL('image/png');$('original').src=rasterURL;$('filename').textContent=name;$('filemeta').textContent=meta;clearResult();trace();}
@@ -55,7 +55,7 @@ $('quality').onchange=()=>{$('speckle').value=qualityPresets[$('quality').value]
 $('detail').onchange=()=>{$('simplify').value=detailPresets[$('detail').value];markDirty();};
 for(const radio of document.querySelectorAll('input[name="color-mode"]'))radio.onchange=markDirty;
 for(const id of controls.filter(x=>!['preset','quality','detail'].includes(x))) $(id).addEventListener('input',markDirty);
-$('split').oninput=renderView;for(const button of document.querySelectorAll('[data-view]')) button.onclick=()=>{view=button.dataset.view;if(svg)showSVG();else renderView();};const viewer=installViewer({viewport:$('viewport'),stage:$('canvas-stage'),artboard:$('artboard'),label:$('zoom-label'),getSource:()=>source,zoomIn:$('zoom-in'),zoomOut:$('zoom-out'),fitButton:$('fit'),fullscreenButton:$('fullscreen'),editor:$('studio')});
+$('split').oninput=renderView;for(const button of document.querySelectorAll('[data-view]')) button.onclick=()=>{view=button.dataset.view;if(svg)showSVG();else renderView();};const viewer=installViewer({viewport:$('viewport'),stage:$('canvas-stage'),artboard:$('artboard'),label:$('zoom-label'),getSource:()=>source,zoomIn:$('zoom-in'),zoomOut:$('zoom-out'),fitButton:$('fit'),fullscreenButton:$('fullscreen'),handButton:$('hand'),editor:$('studio')});
 $('download').onclick=()=>{if(!svg||dirty||busy)return;const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));const link=document.createElement('a');link.href=url;link.download=source.name.replace(/\.[^.]+$/,'')+'-vector-studio.svg';link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);};
 let dragDepth=0;document.addEventListener('dragenter',event=>{if(!event.dataTransfer.types.includes('Files'))return;event.preventDefault();dragDepth++;if(!busy)$('drop-overlay').hidden=false;});document.addEventListener('dragover',event=>{if(event.dataTransfer.types.includes('Files'))event.preventDefault();});document.addEventListener('dragleave',()=>{if(--dragDepth<=0){dragDepth=0;$('drop-overlay').hidden=true;}});document.addEventListener('drop',event=>{event.preventDefault();dragDepth=0;$('drop-overlay').hidden=true;if(!busy)loadFile(event.dataTransfer.files[0]);});document.addEventListener('paste',event=>{if(busy)return;const item=[...(event.clipboardData?.items||[])].find(item=>item.type.startsWith('image/'));if(item){event.preventDefault();loadFile(item.getAsFile());}});
 window.addEventListener('pagehide',()=>{stopWorker();if(vectorURL)URL.revokeObjectURL(vectorURL);});updateLabels();sample();

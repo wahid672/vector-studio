@@ -146,3 +146,9 @@ Branding publik menggunakan Vector Studio. Canonical, Open Graph, Twitter Card, 
 Cubitan touchpad pada area kanvas memperbesar gambar di sekitar kursor. Scroll dua jari menggeser kanvas yang telah diperbesar. Tombol Layar penuh menampilkan editor beserta pengaturan dan tombol unduh; Esc atau tombol Keluar mengembalikannya. Browser yang tidak mengizinkan native fullscreen memakai editor yang memenuhi viewport.
 
 Atribusi dan lisensi dependensi dipertahankan dalam `dist/THIRD-PARTY-NOTICES.txt` dan source distribusi. Branding engine tidak ditampilkan pada antarmuka.
+
+## Pembersihan tracing dan Hand
+
+Pembersihan Seimbang (default) menyaring variasi RGB ringan sambil mempertahankan batas warna yang kuat, membuang alpha sangat lemah, dan menghapus komponen transparan kecil yang terpisah. Mode Kuat juga menghapus pulau piksel kecil yang opak dan bisa mengurangi aksen/detail kecil; Nonaktif mempertahankan input asli. Preview Asli selalu menampilkan sumber sebelum pembersihan. Unlimited tetap tidak mengirim batas palet `maxColors`; presisi kanal mengelompokkan perbedaan warna yang tidak signifikan sesuai tingkat detail. Susunan bidang Bertumpuk menjadi default untuk mengurangi celah render antarbidang; Cutout tetap tersedia. Parameter ini tidak menjamin kesetaraan dengan Vector Magic.
+
+Gunakan Hand (tombol toolbar atau H) untuk drag kanvas, tahan Spasi + drag sebagai hand sementara, atau drag dengan tombol tengah mouse. Mode Hand menonaktifkan pembatas compare selama drag; mematikan Hand mengaktifkan kembali pembatas. Alat ini menggeser tampilan gambar, bukan memindah path dalam SVG.

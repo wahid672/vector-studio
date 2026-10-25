@@ -47,3 +47,22 @@ test('invalid custom palettes fail before processing',async()=>{
  assert.throws(()=>parsePalette(''),/HEX/);
  assert.deepEqual(parsePalette('#aabbcc, #AABBCC\n#112233'),['#AABBCC','#112233']);
 });
+
+test('cleanup pipeline reduces noisy flat-color fragmentation while retaining real vector paths',async()=>{
+ const engine=await import('../dist/vendor/vtracer.js');
+ const {prepareRaster}=await import('../dist/preprocess.js');
+ const {buildOptions}=await import('../dist/settings.js');
+ const w=80,a=new Uint8Array(w*w*4);
+ for(let y=8;y<72;y++)for(let x=8;x<72;x++){
+  const n=(x*17+y*11)%13-6;
+  a.set(x<40?[120+n,90+n,70+n,255]:[30+n,40+n,50+n,255],(y*w+x)*4);
+ }
+ a.set([100,100,100,12],(2*w+2)*4);
+ const old=engine.vectorize_rgba(a,w,w,{mode:'spline',hierarchical:'cutout',colorPrecision:8,layerDifference:4,filterSpeckle:2,simplify:1.2,optimize:1});
+ const cleaned=prepareRaster(a,w,w,'balanced');
+ const settings={preset:'logo',quality:'high',detail:'medium',simplify:.8,speckle:4,mode:'spline',cleanup:'balanced',layering:'stacked',colorMode:'unlimited'};
+ const svg=engine.vectorize_rgba(cleaned.rgba,w,w,buildOptions(settings));
+ const paths=s=>(s.match(/<path/g)||[]).length;
+ assert.ok(paths(svg)>0&&paths(svg)<paths(old)/2,`Expected fewer noise regions: ${paths(old)} → ${paths(svg)}`);
+ assert.doesNotMatch(svg,/<image|data:image/);assert.ok(cleaned.removedPixels>0);
+});
