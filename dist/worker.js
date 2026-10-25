@@ -2,7 +2,7 @@ import {init,vectorize_rgba} from './vendor/vtracer.js';
 self.onmessage=async({data})=>{
  try {
   const response=await fetch('./vendor/vtracer.wasm');
-  if(!response.ok) throw Error('Mesin VTracer tidak dapat dimuat. Muat ulang halaman.');
+  if(!response.ok) throw Error('Mesin konversi tidak dapat dimuat. Muat ulang halaman.');
   init(await response.arrayBuffer());
   self.postMessage({type:'ready'});
   const start=performance.now();

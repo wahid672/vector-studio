@@ -9,8 +9,8 @@ COPY dist ./dist
 RUN npm run build && npm test
 
 FROM nginx:stable-alpine AS runtime
-LABEL org.opencontainers.image.title="Garis — Vector Studio" \
-      org.opencontainers.image.description="Browser-local raster to SVG studio powered by VTracer" \
+LABEL org.opencontainers.image.title="Vector Studio" \
+      org.opencontainers.image.description="Browser-local raster to SVG editor" \
       org.opencontainers.image.source="https://github.com/wahid672/vector-studio"
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 COPY --from=build /app/dist /usr/share/nginx/html

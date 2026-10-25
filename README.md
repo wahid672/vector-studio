@@ -1,4 +1,4 @@
-# Garis — Studio Vektor
+# Vector Studio
 
 Aplikasi web raster → SVG dengan VTracer open source. Seluruh gambar diproses di browser lewat WebAssembly dalam Web Worker; tidak ada API berbayar, upload gambar ke server, akun, atau database.
 
@@ -123,7 +123,7 @@ Buka http://127.0.0.1:4173. Direktori `dist/` dapat disajikan sebagai situs stat
 - Pengaturan jenis gambar (artwork tepi halus / tajam, foto, hitam-putih), kualitas sumber, dan tingkat detail hasil.
 - **Unlimited colors** sebagai default: tidak mengirim `maxColors` atau palet ke VTracer; jumlah warna tidak dibatasi ke 32. VTracer tetap mengelompokkan warna menurut kualitas, detail, dan struktur gambar, sehingga tidak menjamin setiap piksel menjadi warna tersendiri.
 - Pilihan pembatasan 2–256 warna atau palet kustom HEX; pengaturan penyederhanaan, bintik, bentuk garis, dan threshold hitam-putih.
-- Preview pembanding, asli, vektor, outline, dan zoom 25–400%.
+- Preview pembanding, asli, vektor, outline, dan zoom 10–1600%, cubit touchpad, serta layar penuh khusus editor.
 - Unduh SVG dengan path asli, statistik path/warna/ukuran/waktu, serta pembatalan worker.
 - SVG hasil lama tidak bisa diunduh setelah pengaturan berubah sampai pemrosesan berhasil.
 
@@ -138,3 +138,11 @@ Unlimited colors tidak menghapus batas resolusi atau waktu proses (120 detik). F
 Dependency dikunci ke `@visioncortex/vtracer@1.0.0-alpha.4` (rilis upstream masih alpha). `scripts/vendor.mjs` menyalin WASM resmi tanpa perubahan, lalu mengadaptasi glue JavaScript Node menjadi modul browser dengan initializer byte-buffer. Algoritma tracing tidak dimodifikasi. Build gagal jika pola inisialisasi upstream berubah. Lisensi dan atribusi berada di `dist/THIRD-PARTY-NOTICES.txt`.
 
 Sumber upstream: https://github.com/visioncortex/vtracer
+
+## Branding dan SEO
+
+Branding publik menggunakan Vector Studio. Canonical, Open Graph, Twitter Card, structured data WebApplication, robots.txt, dan sitemap mengarah ke `https://vector-studio-wheat.vercel.app/`. Jika domain produksi berubah, perbarui URL pada `dist/index.html`, `dist/robots.txt`, dan `dist/sitemap.xml`. Logo SVG, favicon ICO, Apple touch icon, manifest icons, dan social preview disertakan di `dist/`. `scripts/brand-assets.py` membuat aset PNG/ICO dari geometri logo (memerlukan Python + Pillow; tidak dibutuhkan saat build Node/Docker/Vercel).
+
+Cubitan touchpad pada area kanvas memperbesar gambar di sekitar kursor. Scroll dua jari menggeser kanvas yang telah diperbesar. Tombol Layar penuh menampilkan editor beserta pengaturan dan tombol unduh; Esc atau tombol Keluar mengembalikannya. Browser yang tidak mengizinkan native fullscreen memakai editor yang memenuhi viewport.
+
+Atribusi dan lisensi dependensi dipertahankan dalam `dist/THIRD-PARTY-NOTICES.txt` dan source distribusi. Branding engine tidak ditampilkan pada antarmuka.

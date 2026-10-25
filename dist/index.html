@@ -2,11 +2,34 @@
 <html lang="id">
 <head>
  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
- <meta name="description" content="Ubah gambar menjadi SVG yang bisa diedit. Studio vektorisasi open source dengan VTracer, diproses di perangkat Anda.">
- <title>Garis — Studio Vektor</title><link rel="stylesheet" href="style.css">
+ <title>Vector Studio — Konversi PNG &amp; JPG ke SVG Gratis</title>
+ <meta name="description" content="Ubah PNG, JPG, dan WebP menjadi vektor SVG gratis dengan Vector Studio. Unlimited colors, preview interaktif, dan pemrosesan privat langsung di browser.">
+ <meta name="robots" content="index, follow, max-image-preview:large">
+ <meta name="theme-color" content="#222a29">
+ <meta name="application-name" content="Vector Studio">
+ <link rel="canonical" href="https://vector-studio-wheat.vercel.app/">
+ <meta property="og:type" content="website"><meta property="og:locale" content="id_ID">
+ <meta property="og:site_name" content="Vector Studio">
+ <meta property="og:title" content="Vector Studio — Konversi Gambar ke SVG Gratis">
+ <meta property="og:description" content="Dari piksel jadi vektor. Unlimited colors, editor interaktif, dan ekspor SVG langsung di browser Anda.">
+ <meta property="og:url" content="https://vector-studio-wheat.vercel.app/">
+ <meta property="og:image" content="https://vector-studio-wheat.vercel.app/social-preview.png">
+ <meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+ <meta property="og:image:alt" content="Vector Studio — dari piksel jadi presisi, konversi gambar ke SVG">
+ <meta name="twitter:card" content="summary_large_image">
+ <meta name="twitter:title" content="Vector Studio — Konversi Gambar ke SVG Gratis">
+ <meta name="twitter:description" content="Ubah PNG, JPG, dan WebP ke SVG. Gratis, unlimited colors, dan diproses di browser.">
+ <meta name="twitter:image" content="https://vector-studio-wheat.vercel.app/social-preview.png">
+ <meta name="twitter:image:alt" content="Vector Studio — studio konversi gambar ke SVG">
+ <link rel="icon" href="/favicon.ico" sizes="any">
+ <link rel="icon" href="/logo.svg" type="image/svg+xml">
+ <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180">
+ <link rel="manifest" href="/site.webmanifest">
+ <link rel="stylesheet" href="style.css">
+ <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Vector Studio","url":"https://vector-studio-wheat.vercel.app/","description":"Konversi PNG, JPG, dan WebP menjadi vektor SVG langsung di browser.","applicationCategory":"DesignApplication","operatingSystem":"Web browser","inLanguage":"id","isAccessibleForFree":true,"image":"https://vector-studio-wheat.vercel.app/social-preview.png","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Konversi gambar ke SVG","Unlimited colors","Preview perbandingan","Editor layar penuh","Pemrosesan lokal di browser"]}</script>
 </head>
 <body>
-<header class="site-header"><a class="brand" href="#" aria-label="Garis beranda"><span class="brand-mark">g<span>↗</span></span>garis<span class="brand-dot">.</span></a><nav aria-label="Navigasi utama"><a href="#studio">Studio</a><a href="#cara-kerja">Cara kerja</a><a href="https://github.com/visioncortex/vtracer" target="_blank" rel="noopener">Open source ↗</a></nav><span class="local-badge"><i></i> 100% di perangkat Anda</span></header>
+<header class="site-header"><a class="brand studio-brand" href="#" aria-label="Vector Studio beranda"><img src="logo.svg" alt="" width="38" height="38"><span>Vector<span class="brand-studio"> Studio</span><span class="brand-dot">.</span></span></a><nav aria-label="Navigasi utama"><a href="#studio">Studio</a><a href="#cara-kerja">Cara kerja</a><a href="#cara-kerja">Panduan</a></nav><span class="local-badge"><i></i> 100% di perangkat Anda</span></header>
 <main>
  <section class="hero"><div><p class="eyebrow"><span>01 /</span> RASTER TO VECTOR STUDIO</p><h1>Dari piksel,<br>jadi <em>presisi.</em><span class="asterisk">✳</span></h1></div><div class="hero-copy"><p>Beri garis baru pada ide Anda.<br>Ubah logo, ilustrasi, dan sketsa menjadi<br>vektor yang tajam di setiap ukuran.</p><div class="hero-tags"><span>Gratis digunakan</span><span>Tanpa unggah ke server</span></div></div></section>
  <section id="studio" class="studio" aria-label="Studio vektorisasi">
@@ -20,7 +43,7 @@
      <label class="color-choice"><input type="radio" name="color-mode" value="unlimited" checked><span><strong>Unlimited colors</strong><small>Gunakan warna sesuai kebutuhan.</small></span></label>
      <label class="color-choice"><input type="radio" name="color-mode" value="limited"><span><strong>Batasi jumlah warna</strong><small>Sederhanakan menjadi 2–256 warna.</small></span></label>
      <label class="color-choice"><input type="radio" name="color-mode" value="custom"><span><strong>Palet kustom</strong><small>Gunakan warna HEX pilihan Anda.</small></span></label>
-     <p class="setting-help">Unlimited tidak menetapkan batas jumlah warna. Warna tetap dikelompokkan oleh VTracer.</p>
+     <p class="setting-help">Unlimited memakai warna sesuai kebutuhan gambar, tanpa batas jumlah warna yang ditentukan.</p>
     </fieldset>
     <div id="color-count-control" class="setting" hidden><label for="colors">Jumlah warna <output id="colors-value">8</output></label><input id="colors" type="range" min="2" max="256" value="8"><div class="range-labels"><span>Lebih sederhana</span><span>Lebih kaya</span></div></div>
     <div id="palette-control" class="palette-control" hidden><label class="field-label" for="palette">Warna palet (HEX)</label><textarea id="palette" rows="3" spellcheck="false" aria-describedby="palette-help">#345949, #E97540, #F3ECD9</textarea><p id="palette-help" class="setting-help">Pisahkan dengan koma atau baris baru, contoh #345949.</p></div>
@@ -29,19 +52,18 @@
     <label class="field-label" for="mode">Bentuk garis</label><select id="mode"><option value="spline">Kurva halus</option><option value="polygon">Sudut geometris</option><option value="pixel">Piksel / kotak</option></select>
     <div id="bw-control" class="setting" hidden><label for="threshold">Ambang hitam-putih <output id="threshold-value">128</output></label><input id="threshold" type="range" min="1" max="254" value="128"></div>
     <button id="trace" class="button button-orange">Vektorisasi <span>↗</span></button><button id="cancel" class="button button-light" hidden>Batalkan proses</button>
-    <div class="engine-note"><span class="engine-icon">⌘</span><p>Powered by <strong>VTracer</strong><br>Open source. Tanpa biaya API.</p></div>
    </aside>
-   <div class="preview-area"><div class="viewer-toolbar"><div class="view-tabs" role="group" aria-label="Mode tampilan"><button data-view="compare" aria-pressed="true">Bandingkan</button><button data-view="vector" aria-pressed="false">Vektor</button><button data-view="original" aria-pressed="false">Asli</button><button data-view="outline" aria-pressed="false">Outline</button></div><div class="zoom-controls"><button id="zoom-out" aria-label="Perkecil">−</button><output id="zoom-label">100%</output><button id="zoom-in" aria-label="Perbesar">+</button><button id="fit" aria-label="Sesuaikan ke kanvas">⛶</button></div></div>
-    <div id="viewport" class="viewport"><div id="artboard" class="artboard"><img id="original" alt="Gambar raster asli" draggable="false"><img id="vector" alt="Hasil vektorisasi SVG" draggable="false"><div id="split-line" class="split-line"><span>↔</span></div><input id="split" class="split-input" type="range" min="0" max="100" value="50" aria-label="Pembatas gambar asli dan vektor"></div><div class="canvas-labels"><span id="label-left">ASLI / PIKSEL</span><span id="label-right">HASIL / VEKTOR</span></div><div id="busy" class="busy" hidden><span class="spinner"></span><strong id="busy-label">Memuat mesin…</strong><span>Gambar diproses di perangkat Anda</span></div></div>
-    <div class="preview-footer"><div><span id="status-dot" class="status-dot"></span><span id="status" role="status" aria-live="polite">Menyiapkan studio</span></div><span id="hint">Geser pembatas untuk membandingkan</span></div>
+   <div class="preview-area"><div class="viewer-toolbar"><div class="view-tabs" role="group" aria-label="Mode tampilan"><button data-view="compare" aria-pressed="true">Bandingkan</button><button data-view="vector" aria-pressed="false">Vektor</button><button data-view="original" aria-pressed="false">Asli</button><button data-view="outline" aria-pressed="false">Outline</button></div><div class="zoom-controls"><button id="zoom-out" aria-label="Perkecil">−</button><output id="zoom-label">100%</output><button id="zoom-in" aria-label="Perbesar">+</button><button id="fit" aria-label="Sesuaikan ke kanvas" title="Sesuaikan ke kanvas">⛶</button><button id="fullscreen" class="fullscreen-button" aria-label="Layar penuh editor" aria-pressed="false" title="Layar penuh editor"><svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true"><path d="M8 3H3v5m13-5h5v5M3 16v5h5m13-5v5h-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span>Layar penuh</span></button></div></div>
+    <div id="viewport" class="viewport" tabindex="0" aria-label="Kanvas editor. Cubit touchpad untuk zoom, gulir dua jari untuk menggeser."><div id="canvas-stage" class="canvas-stage"><div id="artboard" class="artboard"><img id="original" alt="Gambar raster asli" draggable="false"><img id="vector" alt="Hasil vektorisasi SVG" draggable="false"><div id="split-line" class="split-line"><span>↔</span></div><input id="split" class="split-input" type="range" min="0" max="100" value="50" aria-label="Pembatas gambar asli dan vektor"></div></div><div class="canvas-labels"><span id="label-left">ASLI / PIKSEL</span><span id="label-right">HASIL / VEKTOR</span></div><div id="busy" class="busy" hidden><span class="spinner"></span><strong id="busy-label">Memuat mesin…</strong><span>Gambar diproses di perangkat Anda</span></div></div>
+    <div class="preview-footer"><div><span id="status-dot" class="status-dot"></span><span id="status" role="status" aria-live="polite">Menyiapkan studio</span></div><span id="hint">Cubit touchpad: zoom · Gulir dua jari: geser</span></div>
    </div>
   </div>
   <div class="studio-bottom"><div class="metrics"><span><strong id="stat-paths">—</strong> path</span><span><strong id="stat-colors">—</strong> warna</span><span><strong id="stat-size">—</strong> SVG</span><span><strong id="stat-time">—</strong> waktu proses</span></div><button id="sample" class="text-button">Coba gambar contoh ↗</button></div>
+  <div id="notice" class="notice" role="alert" hidden></div>
  </section>
- <div id="notice" class="notice" role="alert" hidden></div>
  <section id="cara-kerja" class="how"><div class="how-intro"><p class="eyebrow">SEDERHANA, DARI AWAL.</p><h2>Tiga langkah.<br>Tak terbatas ukuran.</h2></div><article><span>01</span><h3>Pilih gambar</h3><p>Tarik gambar ke studio, pilih file, atau tempel dengan Ctrl + V.</p></article><article><span>02</span><h3>Rapikan garisnya</h3><p>Atur warna dan kehalusan. Bandingkan hasil sebelum mengunduh.</p></article><article><span>03</span><h3>Bawa ke mana saja</h3><p>Unduh SVG untuk melanjutkan desain di editor vektor pilihan Anda.</p></article></section>
 </main>
-<footer><a class="brand" href="#">garis.</a><span>Dibuat untuk ide yang terus membesar.</span><a href="THIRD-PARTY-NOTICES.txt" target="_blank">VTracer · Lisensi open source ↗</a></footer>
+<footer><a class="brand studio-brand" href="#" aria-label="Vector Studio beranda"><img src="logo.svg" alt="" width="28" height="28"><span>Vector<span class="brand-studio"> Studio</span>.</span></a><span>Dibuat untuk ide yang terus membesar.</span><span class="footer-formats">PNG · JPG · WebP → SVG</span></footer>
 <div id="drop-overlay" class="drop-overlay" hidden><span>↥</span><h2>Lepaskan gambar di sini</h2><p>PNG · JPG · WebP · BMP · GIF</p></div>
 <script type="module" src="app.js"></script>
 </body></html>

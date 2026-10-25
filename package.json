@@ -1,12 +1,12 @@
 {
-  "name": "garis-vector-studio",
+  "name": "vector-studio",
   "private": true,
   "type": "module",
   "version": "0.1.0",
   "scripts": {
     "dev": "node scripts/serve.mjs",
     "build": "node scripts/vendor.mjs",
-    "test": "node --test tests/engine.test.cjs"
+    "test": "node --test tests/*.test.cjs"
   },
   "dependencies": { "@visioncortex/vtracer": "1.0.0-alpha.4" }
 }

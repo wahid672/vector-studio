@@ -1,0 +1,15 @@
+{
+  "id": "/",
+  "name": "Vector Studio",
+  "short_name": "Vector Studio",
+  "description": "Konversi gambar PNG, JPG, dan WebP menjadi SVG langsung di browser.",
+  "lang": "id",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f5f0",
+  "theme_color": "#222a29",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
