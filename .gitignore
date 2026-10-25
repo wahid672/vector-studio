@@ -2,3 +2,7 @@ node_modules/
 .sites-runtime/
 *.tar.gz
 .qa/
+.env
+.env.*
+!.env.example
+*.log

@@ -1,0 +1,7 @@
+# Use with: docker compose -f compose.yaml -f compose.build.yaml up -d --build
+services:
+  vector-studio:
+    image: vector-studio:local
+    build:
+      context: .
+      dockerfile: Dockerfile

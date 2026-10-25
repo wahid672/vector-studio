@@ -1,9 +1,10 @@
 const {test}=require('node:test');
 const assert=require('node:assert/strict');
 const fs=require('node:fs/promises');
+const {pathToFileURL}=require('node:url');
 test('browser adapter creates real editable paths from RGBA, with palette and transparency',async()=>{
  const engine=await import('../dist/vendor/vtracer.js');
- engine.init(await fs.readFile(new URL('../dist/vendor/vtracer.wasm',`file:///${__filename.replaceAll('\\','/')}`)));
+ engine.init(await fs.readFile(new URL('../dist/vendor/vtracer.wasm',pathToFileURL(__filename))));
  const rgba=new Uint8Array(64*64*4);
  for(let y=8;y<56;y++)for(let x=8;x<56;x++)rgba.set(x<32?[230,80,30,255]:[30,90,60,255],(y*64+x)*4);
  for(const mode of ['spline','polygon','pixel']){
