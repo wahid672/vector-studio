@@ -2,6 +2,30 @@
 
 Aplikasi web raster → SVG dengan VTracer open source. Seluruh gambar diproses di browser lewat WebAssembly dalam Web Worker; tidak ada API berbayar, upload gambar ke server, akun, atau database.
 
+## Deploy ke Vercel
+
+1. Buka https://vercel.com/new dan import repository `wahid672/vector-studio`.
+2. Gunakan **Root Directory** root repository (`.`), bukan `dist` atau `vector-studio`.
+3. Pilih **Framework Preset: Other**. Konfigurasi `vercel.json` sudah menetapkan:
+   - Install Command: `npm ci --ignore-scripts`
+   - Build Command: `npm run build && npm test`
+   - Output Directory: `dist`
+4. Klik **Deploy**. Tidak perlu environment variable atau API key.
+
+Vercel menyajikan aplikasi sebagai aset statis. Worker dan engine WASM berjalan di browser pengunjung, tanpa Vercel Functions. Header `application/wasm` dikonfigurasi untuk engine VTracer; aset diperiksa ulang agar pembaruan kode dan WASM tidak tertahan cache lama. `.vercelignore` mengecualikan konfigurasi Docker, metadata Site, dan file lokal dari upload CLI, serta tetap menyertakan kode build dan tes.
+
+Setelah repository terhubung, push berikutnya ke branch produksi memicu deployment Vercel. Untuk pengembangan lokal tetap gunakan `npm run dev`.
+
+Alternatif melalui Vercel CLI dari root repository:
+
+```sh
+npx vercel
+# Untuk menerbitkan ke produksi setelah project terhubung:
+npx vercel --prod
+```
+
+CLI akan meminta login dan pemilihan project di akun Vercel Anda. Panduan konfigurasi resmi: https://vercel.com/docs/project-configuration/vercel-json
+
 ## Deploy dengan Docker Compose
 
 Image: `ghcr.io/wahid672/vector-studio:latest` (Linux AMD64 dan ARM64).

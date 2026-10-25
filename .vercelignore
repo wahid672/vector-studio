@@ -1,0 +1,14 @@
+.git
+.github
+.openai
+.sites-runtime
+.qa
+node_modules
+outputs
+docker
+Dockerfile
+compose*.yaml
+*.tar.gz
+*.log
+.env
+.env.*
